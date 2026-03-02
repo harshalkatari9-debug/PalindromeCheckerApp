@@ -9,12 +9,9 @@ public class PalindromeCheckerApp {
         System.out.println("Enter a string to check palindrome:");
         String input = scanner.nextLine();
 
-        // Normalize string:
-        // 1. Convert to lowercase
-        // 2. Remove all spaces
-        String normalized = input.toLowerCase().replaceAll("\\s+", "");
+        PalindromeChecker checker = new PalindromeChecker();
 
-        boolean result = isPalindrome(normalized);
+        boolean result = checker.checkPalindrome(input);
 
         if (result) {
             System.out.println("Result: It is a Palindrome");
@@ -25,21 +22,31 @@ public class PalindromeCheckerApp {
         scanner.close();
     }
 
-    public static boolean isPalindrome(String str) {
+    // Service Class (Encapsulation)
+    static class PalindromeChecker {
 
-        int left = 0;
-        int right = str.length() - 1;
+        public boolean checkPalindrome(String input) {
 
-        while (left < right) {
-
-            if (str.charAt(left) != str.charAt(right)) {
+            if (input == null)
                 return false;
+
+            // Pre-processing (ignore case & spaces)
+            String normalized = input.toLowerCase().replaceAll("\\s+", "");
+
+            int left = 0;
+            int right = normalized.length() - 1;
+
+            while (left < right) {
+
+                if (normalized.charAt(left) != normalized.charAt(right)) {
+                    return false;
+                }
+
+                left++;
+                right--;
             }
 
-            left++;
-            right--;
+            return true;
         }
-
-        return true;
     }
 }
