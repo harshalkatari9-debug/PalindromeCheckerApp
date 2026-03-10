@@ -1,52 +1,96 @@
-import java.util.Scanner;
+import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class PalindromeCheckerApp {
 
-    public static void main(String[] args) {
+    // Two Pointer Method
+    public static boolean twoPointerPalindrome(String str) {
 
-        Scanner scanner = new Scanner(System.in);
+        int left = 0;
+        int right = str.length() - 1;
 
-        System.out.println("Enter a string to check palindrome:");
-        String input = scanner.nextLine();
-
-        PalindromeChecker checker = new PalindromeChecker();
-
-        boolean result = checker.checkPalindrome(input);
-
-        if (result) {
-            System.out.println("Result: It is a Palindrome");
-        } else {
-            System.out.println("Result: It is NOT a Palindrome");
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
 
-        scanner.close();
+        return true;
     }
 
-    // Service Class (Encapsulation)
-    static class PalindromeChecker {
+    // Stack Method
+    public static boolean stackPalindrome(String str) {
 
-        public boolean checkPalindrome(String input) {
+        Stack<Character> stack = new Stack<>();
 
-            if (input == null)
-                return false;
-
-            // Pre-processing (ignore case & spaces)
-            String normalized = input.toLowerCase().replaceAll("\\s+", "");
-
-            int left = 0;
-            int right = normalized.length() - 1;
-
-            while (left < right) {
-
-                if (normalized.charAt(left) != normalized.charAt(right)) {
-                    return false;
-                }
-
-                left++;
-                right--;
-            }
-
-            return true;
+        for (char c : str.toCharArray()) {
+            stack.push(c);
         }
+
+        for (char c : str.toCharArray()) {
+            if (c != stack.pop()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Deque Method
+    public static boolean dequePalindrome(String str) {
+
+        Deque<Character> deque = new ArrayDeque<>();
+
+        for (char c : str.toCharArray()) {
+            deque.addLast(c);
+        }
+
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // MAIN METHOD (REQUIRED)
+    public static void main(String[] args) {
+
+        String text = "racecar";
+
+        long start;
+        long end;
+
+        // Two Pointer
+        start = System.nanoTime();
+        boolean result1 = twoPointerPalindrome(text);
+        end = System.nanoTime();
+        long time1 = end - start;
+
+        // Stack
+        start = System.nanoTime();
+        boolean result2 = stackPalindrome(text);
+        end = System.nanoTime();
+        long time2 = end - start;
+
+        // Deque
+        start = System.nanoTime();
+        boolean result3 = dequePalindrome(text);
+        end = System.nanoTime();
+        long time3 = end - start;
+
+        // Display Results
+        System.out.println("Two Pointer Result: " + result1);
+        System.out.println("Execution Time: " + time1 + " ns");
+
+        System.out.println("Stack Result: " + result2);
+        System.out.println("Execution Time: " + time2 + " ns");
+
+        System.out.println("Deque Result: " + result3);
+        System.out.println("Execution Time: " + time3 + " ns");
     }
 }
