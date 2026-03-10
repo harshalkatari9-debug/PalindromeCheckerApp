@@ -74,5 +74,3 @@ public class PalindromeCheckerApp {
         System.out.println("Using Deque Strategy:");
         System.out.println(checker.check("racecar"));
     }
-}
-// UC12: Strategy Pattern for Palindrome Algorithms
